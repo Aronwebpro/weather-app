@@ -12,5 +12,6 @@ export default {
     noticeBackground: tintColor,
     noticeText: '#fff',
     contentGrey: 'rgba(0,0,0,0.5)',
+    searchModalText: '#fff',
 }
 ;

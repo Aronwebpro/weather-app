@@ -23,6 +23,15 @@ HomeStack.navigationOptions = {
       }
     />
   ),
+  navigationOptions: {
+      headerStyle: {
+          backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+          fontWeight: 'bold',
+      },
+  },
 };
 
 const LinksStack = createStackNavigator({
