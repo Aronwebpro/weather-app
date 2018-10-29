@@ -1,5 +1,6 @@
 import {
     cities,
+    weather,
 } from '../settings';
 
 
@@ -31,7 +32,29 @@ const fetchCityData = async (citySearch) => {
     }
 };
 
+const fetchWeatherDataByCoord = async ({latitude, longitude}) => {
+    const API_KEY = weather.WEATHER_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?APPID=${API_KEY}&lat=${latitude}&lon=${longitude}`;
+    try {
+        const respond = await fetch(url, {
+            method: 'GET',
+            headers: new Headers({
+                'Accept': 'application/json'
+            })
+        });
+        let result;
+        try {
+            result = await respond.json();
+        } catch (e) {
+            console.log(e);
+        }
+        return result;
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 export {
     fetchCityData,
+    fetchWeatherDataByCoord,
 }

@@ -8,7 +8,10 @@ import {
 
 // Expo
 import {EvilIcons} from '@expo/vector-icons';
-import {LinearGradient} from 'expo';
+import {LinearGradient, Constants, Location, Permissions} from 'expo';
+
+//Lookups
+import {fetchWeatherDataByCoord} from '../api/lookups';
 
 //Components
 import SearchCityModal from '../components/SearchCityModal';
@@ -71,7 +74,22 @@ export default class HomeScreen extends React.Component {
         //         "country": "United States",
         //         "state": "Illinois",
         // }
+        this._getLocationAsync();
     }
+
+    _getLocationAsync = async () => {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status === 'granted') {
+            const {coords} = await Location.getCurrentPositionAsync({});
+            if (coords) {
+                const {latitude, longitude} = coords;
+                console.log({latitude, longitude});
+                const weatherData = await fetchWeatherDataByCoord({latitude, longitude});
+                console.log({weatherData});
+            }
+        }
+
+    };
 
     modalClose = () => this.setState({modalVisible: false});
     modalOpen = () => this.setState({modalVisible: true});
