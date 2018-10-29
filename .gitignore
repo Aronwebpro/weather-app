@@ -2,3 +2,4 @@ node_modules/**/*
 .expo/**/*
 .idea/**/*
 .idea/vcs.xml
+settings.js

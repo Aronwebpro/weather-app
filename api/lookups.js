@@ -1,7 +1,6 @@
 import {
-    CITIES_API_URI,
-    CITIES_API_KEY
-} from '../constants/API';
+    cities,
+} from '../settings';
 
 
 const fetchCityData = async (citySearch) => {
@@ -13,11 +12,11 @@ const fetchCityData = async (citySearch) => {
     const queryString = Object.keys(params).map((key, i, a) => (i === 0 ? '?' : '') + key + '=' + params[key] + (i === a.length - 1 ? '' : '&')).join('');
 
     try {
-        const respond = await fetch(CITIES_API_URI + queryString, {
+        const respond = await fetch(cities.API_URI + queryString, {
             method: 'GET',
             headers: new Headers({
                 'Accept': 'application/json',
-                "X-Mashape-Key": CITIES_API_KEY,
+                "X-Mashape-Key": cities.API_KEY,
             }),
         });
         let result = [];
