@@ -2,6 +2,11 @@ import {
     cities,
     weather,
 } from '../settings';
+import {
+    parseWeatherDataForFiveDaysForecast,
+    parseWeatherDataForTenHoursForecast,
+    parseWeatherDataForCurrentMoment,
+} from '../utils';
 
 
 const fetchCityData = async (citySearch) => {
@@ -17,7 +22,7 @@ const fetchCityData = async (citySearch) => {
             method: 'GET',
             headers: new Headers({
                 'Accept': 'application/json',
-                "X-Mashape-Key": cities.API_KEY,
+                'X-Mashape-Key': cities.API_KEY,
             }),
         });
         let result = [];
@@ -32,9 +37,9 @@ const fetchCityData = async (citySearch) => {
     }
 };
 
-const fetchWeatherDataByCoord = async ({latitude, longitude}) => {
+const fetchWeatherDataForNowByCoord = async ({latitude, longitude}) => {
     const API_KEY = weather.WEATHER_API_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?APPID=${API_KEY}&lat=${latitude}&lon=${longitude}`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?APPID=${API_KEY}&lat=${latitude}&lon=${longitude}&units=metric`;
     try {
         const respond = await fetch(url, {
             method: 'GET',
@@ -54,7 +59,59 @@ const fetchWeatherDataByCoord = async ({latitude, longitude}) => {
     }
 };
 
+const fetchWeatherData5daysByCoord = async ({latitude, longitude}) => {
+    const API_KEY = weather.WEATHER_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?APPID=${API_KEY}&lat=${latitude}&lon=${longitude}&units=metric`;
+    try {
+        const respond = await fetch(url, {
+            method: 'GET',
+            headers: new Headers({
+                'Accept': 'application/json'
+            })
+        });
+        let result;
+        try {
+            result = await respond.json();
+        } catch (e) {
+            console.log(e);
+        }
+        return result;
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+
+/**
+ * Get Weather data By Coordinates
+ * @param latitude
+ * @param longitude
+ * @returns Object -> {fiveDaysForecastData -> {}, tenHoursForecastData  -> {}, currentWeather  -> {}, city  -> {}}
+ */
+const getWeatherForcastDataByCoord = async ({latitude, longitude}) => {
+    //Fetch Data from Weather API
+    const [fiveDaysForecast, curretnWeatherStatus] = await Promise.all([
+        fetchWeatherData5daysByCoord({latitude, longitude}),
+        fetchWeatherDataForNowByCoord({latitude, longitude}),
+    ]);
+    const {list, city} = fiveDaysForecast;
+
+    //Parse Weahter Data
+    const fiveDaysForecastData = parseWeatherDataForFiveDaysForecast(list);
+    const tenHoursForecastData = parseWeatherDataForTenHoursForecast(list);
+    const currentWeather = parseWeatherDataForCurrentMoment(curretnWeatherStatus);
+
+    return {
+        fiveDaysForecastData,
+        tenHoursForecastData,
+        currentWeather,
+        city,
+    }
+};
+
 export {
     fetchCityData,
-    fetchWeatherDataByCoord,
+    fetchWeatherDataForNowByCoord,
+    fetchWeatherData5daysByCoord,
+    getWeatherForcastDataByCoord,
 }
