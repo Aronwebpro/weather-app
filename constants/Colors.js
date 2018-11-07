@@ -13,5 +13,6 @@ export default {
     noticeText: '#fff',
     contentGrey: 'rgba(0,0,0,0.5)',
     searchModalText: '#fff',
+    cityDetailsText: '#fff',
 }
 ;

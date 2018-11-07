@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
@@ -10,37 +11,35 @@ import CityDetails from './CityDetails';
 import CityHourlyForecast from './CityHourlyForecast';
 import CityHeader from './CityHeader';
 
-//Expo
-import { LinearGradient} from 'expo';
-
 export default class CityScreen extends React.Component {
     render() {
         const { data } = this.props;
-        const { city, currentWeather, tenHoursForecastData, fiveDaysForecastData } = data;
-        const { name } = city;
-        //TODO: Implement boundaries for eacht City Page
+        const { city, currentWeatherData, hourlyForecastData, dailyForecastData } = data;
         return (
             <View style={styles.container}>
                 <View style={styles.headerContainer}>
-                    <CityHeader {...{ ...city, ...currentWeather }}/>
+                    <CityHeader {...currentWeatherData} {...city}/>
                 </View>
                 <View style={styles.dailyForceCastContainer}>
-                    <CityHourlyForecast {...{ tenHoursForecastData, name }}/>
+                    <CityHourlyForecast {...{ hourlyForecastData, currentWeatherData }}/>
                 </View>
                 <View style={styles.detailsScrollContainer}>
-                    <CityDetails {...{ fiveDaysForecastData, currentWeather }}/>
+                    <CityDetails {...{ dailyForecastData, currentWeatherData }}/>
                 </View>
             </View>
         )
     }
 };
 
+CityScreen.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 10,
         width: Dimensions.get('window').width,
-        backgroundColor: 'yellowgreen',
     },
     headerContainer: {
         height: 150,

@@ -1,5 +1,10 @@
 import moment from 'moment';
 
+/**
+ * Function to build right format of Weather data for Daily Forecast
+ * @param data -> Object
+ * @returns {Object|*|Uint8Array|BigInt64Array|{title: *, tempMax: *, tempMin: *, icon: *, dayOfWeek: string}[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+ */
 const parseWeatherDataForFiveDaysForecast = (data) => {
     //const parsedData = data.filter((x) =>  )
     return data.filter((item) => {
@@ -16,6 +21,11 @@ const parseWeatherDataForFiveDaysForecast = (data) => {
 
 };
 
+/**
+ * Function to build right format of Weather data for Hourly Forecast
+ * @param data
+ * @returns {{title: *, temp: *, icon: *, hour: string}[]}
+ */
 const parseWeatherDataForTenHoursForecast = (data) => {
     return data.slice(0,9).map((field) => {
         return {
@@ -27,6 +37,11 @@ const parseWeatherDataForTenHoursForecast = (data) => {
     })
 };
 
+/**
+ * Function to build right format of Weather data for Present Weather
+ * @param data
+ * @returns {{humidity: *, pressure: number, temp: *, visibility: string, description: *, icon: *, title: *, windSpeed: number}}
+ */
 const parseWeatherDataForCurrentMoment = (data) => {
     return {
         humidity: data.main.humidity,
@@ -39,6 +54,7 @@ const parseWeatherDataForCurrentMoment = (data) => {
         windSpeed: data.wind.speed,
     }
 };
+
 export {
     parseWeatherDataForFiveDaysForecast,
     parseWeatherDataForTenHoursForecast,

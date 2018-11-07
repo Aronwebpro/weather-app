@@ -97,15 +97,18 @@ const getWeatherForcastDataByCoord = async ({latitude, longitude}) => {
     const {list, city} = fiveDaysForecast;
 
     //Parse Weahter Data
-    const fiveDaysForecastData = parseWeatherDataForFiveDaysForecast(list);
-    const tenHoursForecastData = parseWeatherDataForTenHoursForecast(list);
-    const currentWeather = parseWeatherDataForCurrentMoment(curretnWeatherStatus);
+    const dailyForecastData = parseWeatherDataForFiveDaysForecast(list);
+    const hourlyForecastData = parseWeatherDataForTenHoursForecast(list);
+    const currentWeatherData = parseWeatherDataForCurrentMoment(curretnWeatherStatus);
 
     return {
-        fiveDaysForecastData,
-        tenHoursForecastData,
-        currentWeather,
-        city,
+        cityName: city.name,
+        data: {
+            dailyForecastData,
+            hourlyForecastData,
+            currentWeatherData,
+            city,
+        }
     }
 };
 

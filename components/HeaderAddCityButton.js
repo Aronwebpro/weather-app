@@ -1,16 +1,17 @@
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
     TouchableOpacity,
     StyleSheet
 
 } from 'react-native';
+
 //Expo
-import {MaterialIcons} from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default class HeaderAddCityButton extends React.PureComponent {
     render() {
-        const {modalOpen} = this.props;
+        const { modalOpen } = this.props;
         return (
             <TouchableOpacity
                 onPress={modalOpen}
@@ -18,7 +19,7 @@ export default class HeaderAddCityButton extends React.PureComponent {
             >
                 <MaterialIcons
                     name={'playlist-add'}
-                    hitSlop={{top: 10, left: 10, bottom: 10,right: 10}}
+                    hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
                     size={30}
                     color={'#fff'}
                 />
@@ -26,12 +27,13 @@ export default class HeaderAddCityButton extends React.PureComponent {
         )
     }
 }
-HeaderAddCityButton.propTypes = {
 
+HeaderAddCityButton.propTypes = {
+    modalOpen: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
     container: {
-
+        paddingBottom: 15,
     }
 });

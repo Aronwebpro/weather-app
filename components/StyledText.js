@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
 export default class StyledText extends React.Component {
     render() {
-        const { size, style, color } = this.props;
+        const { size, color } = this.props;
 
         // Size
         let fontSize = 17;
@@ -64,3 +65,8 @@ export default class StyledText extends React.Component {
         )
     }
 }
+
+StyledText.propTypes = {
+    size: PropTypes.string,
+    color: PropTypes.string
+};

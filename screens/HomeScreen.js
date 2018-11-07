@@ -3,98 +3,52 @@ import {
     StyleSheet,
     View,
     FlatList,
-    TouchableOpacity,
+    SafeAreaView,
 } from 'react-native';
 
 // Expo
-import {EvilIcons} from '@expo/vector-icons';
-import {LinearGradient, Constants, Location, Permissions} from 'expo';
+import { EvilIcons } from '@expo/vector-icons';
+import { LinearGradient, Constants, Location, Permissions } from 'expo';
 
 //Lookups
-import {fetchWeatherDataForNowByCoord, fetchWeatherData5daysByCoord, getWeatherForcastDataByCoord} from '../api/lookups';
+//TODO:
+import {
+    fetchWeatherDataForNowByCoord,
+    fetchWeatherData5daysByCoord,
+    getWeatherForcastDataByCoord
+} from '../api/lookups';
 
 //Components
 import SearchCityModal from '../components/SearchCityModal';
 import HeaderAddCityButton from '../components/HeaderAddCityButton';
+import CityScreen from '../components/CityScreen';
 
-
-const weatherObj = JSON.parse(
-    `{
-        "weatherData": {
-            "base": "stations",
-            "clouds": {
-                "all": 1
-            },
-            "cod": 200,
-            "coord": {
-                "lat": 37.79,
-                "lon": -122.41
-            },
-            "dt": 1541104800,
-            "id": 5391959,
-            "main": {
-                "humidity": 44,
-                "pressure": 1019,
-                "temp": 299.13,
-                "temp_max": 301.15,
-                "temp_min": 297.55
-            },
-            "name": "San Francisco",
-            "sys": {
-                "country": "US",
-                "id": 392,
-                "message": 0.0049,
-                "sunrise": 1541082962,
-                "sunset": 1541120988,
-                "type": 1
-            },
-            "visibility": 12874,
-            "weather": [
-                {
-                    "description": "clear sky",
-                    "icon": "01d",
-                    "id": 800,
-                    "main": "Clear"
-                }
-            ],
-            "wind": {
-                "deg": 330,
-                "speed": 2.1
-            }
-        }
-    }`
-);
 
 export default class HomeScreen extends React.Component {
-    static navigationOptions = ({navigation}) => {
-        return {
-            title: 'Home',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-            },
-            headerBackground: (
-                <LinearGradient
-                    colors={['#113254', '#020f1a']}
-                    style={{flex: 1}}
-                />
-            ),
-            headerTintColor: '#fff',
-        };
-    };
+    static navigationOptions = { header: null };
 
     state = {
         modalVisible: false,
         cities: [],
-
     };
 
     render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.content}>
+        const { cities } = this.state;
 
-                </View>
-                <LinearGradient style={styles.bottomMenuContainer} colors={['#817f87', '#092e4f', '#020f1a']}>
+        return (
+            <LinearGradient style={styles.container} colors={['#817f87', '#092e4f', '#020f1a']}>
+                <SafeAreaView style={styles.content} >
+                    <FlatList
+                        horizontal={true}
+                        style={styles.container}
+                        data={cities}
+                        pagingEnabled
+                        renderItem={({ item }) => (
+                            <CityScreen {...item}/>
+                        )}
+                    />
+                </SafeAreaView>
+                <View style={styles.bottomMenuContainer}>
                     <View style={styles.footerLeft}>
                         {/*TODO: Weather App Icon*/}
                     </View>
@@ -104,48 +58,44 @@ export default class HomeScreen extends React.Component {
                     <View style={styles.footerRight}>
                         <HeaderAddCityButton modalOpen={this.modalOpen}/>
                     </View>
-                </LinearGradient>
+                </View>
                 <SearchCityModal
                     modalVisible={this.state.modalVisible}
                     closeModal={this.modalClose}
                     navigation={this.props.navigation}
                     addCity={this.addCity}
                 />
-            </View>
+            </LinearGradient>
         );
     }
 
     async componentDidMount() {
-        //TODO: Get City list
-        //Data Sample
-        // clicked Object {
-        //     "city": "Chicago",
-        //         "country": "United States",
-        //         "state": "Illinois",
-        // }
-        this.setState({cities: [weatherObj]});
-        //console.log(weatherObj);
-
-        const {coords} = await this._getLocationAsync();
-
+        //TODO: Temp Solution with Geo
+        const { coords } = await this._getLocationAsync();
         if (coords) {
-            const {latitude, longitude} = coords;
-            const weatherData = await getWeatherForcastDataByCoord({latitude, longitude});
-            console.log({weatherData});
+            const { latitude, longitude } = coords;
+            const { data } = await getWeatherForcastDataByCoord({ latitude, longitude });
+            this.setState({
+                cities: [
+                    {
+                        key: 'SanSS',
+                        data: data,
+                    }
+                ]
+            });
         }
-
     }
 
     _getLocationAsync = async () => {
-        const {status} = await Permissions.askAsync(Permissions.LOCATION);
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status === 'granted') {
             return await Location.getCurrentPositionAsync({});
         }
-
     };
 
-    modalClose = () => this.setState({modalVisible: false});
-    modalOpen = () => this.setState({modalVisible: true});
+    //Add City Modal Handlers
+    modalClose = () => this.setState({ modalVisible: false });
+    modalOpen = () => this.setState({ modalVisible: true });
     addCity = (city) => {
         this.modalClose();
         console.log('clicked', city);
@@ -156,10 +106,10 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     content: {
         flex: 1,
+        marginTop: 40,
     },
     activityIndicator: {
         marginTop: 20,
