@@ -4,19 +4,28 @@ import {
     View,
     StyleSheet,
     Dimensions,
+    ImageBackground,
+    SafeAreaView,
 } from 'react-native';
+//Expo
+import { LinearGradient } from 'expo';
 
 //Components
 import CityDetails from './CityDetails';
 import CityHourlyForecast from './CityHourlyForecast';
 import CityHeader from './CityHeader';
+import HeaderImage from './HeaderImage';
+
+//Utils
+import {backgroundByWeatherConditions} from '../utils';
 
 export default class CityScreen extends React.Component {
     render() {
         const { data } = this.props;
         const { city, currentWeatherData, hourlyForecastData, dailyForecastData } = data;
         return (
-            <View style={styles.container}>
+            <LinearGradient style={styles.container} colors={backgroundByWeatherConditions()}>
+                <HeaderImage />
                 <View style={styles.headerContainer}>
                     <CityHeader {...currentWeatherData} {...city}/>
                 </View>
@@ -26,7 +35,7 @@ export default class CityScreen extends React.Component {
                 <View style={styles.detailsScrollContainer}>
                     <CityDetails {...{ dailyForecastData, currentWeatherData }}/>
                 </View>
-            </View>
+            </LinearGradient>
         )
     }
 };
@@ -38,6 +47,7 @@ CityScreen.propTypes = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 40,
         paddingHorizontal: 10,
         width: Dimensions.get('window').width,
     },
@@ -49,5 +59,5 @@ const styles = StyleSheet.create({
     },
     detailsScrollContainer: {
         flex: 1,
-    },
+    }
 });

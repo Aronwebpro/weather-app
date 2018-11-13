@@ -3,3 +3,7 @@ node_modules/**/*
 .idea/**/*
 .idea/vcs.xml
 settings.js
+.DS_Store
+assets/.DS_Store
+assets/images/.DS_Store
+

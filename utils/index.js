@@ -54,9 +54,41 @@ const parseWeatherDataForCurrentMoment = (data) => {
         windSpeed: data.wind.speed,
     }
 };
+//TODO:
+const backgroundByWeatherConditions = (status) => {
+    switch (status) {
+        case 'rain' :
+            return ['#817f87', '#092e4f', '#020f1a'];
+        default :
+            return ['#817f87', '#092e4f', '#020f1a'];
+    }
+};
+//TODO:
+const headerImageUrl = (status) => {
+    switch (status) {
+        case 'rain' :
+            return require('../assets/images/clouds.gif');
+        default :
+            return require('../assets/images/clouds.gif');
+    }
+};
+//TODO:
+const weatherIcon = (icon) => {
+    switch (icon) {
+        case 'is' :
+            return require('../assets/images/clouds.gif');
+        default :
+            return require('../assets/images/clouds.gif');
+    }
+
+};
+
 
 export {
     parseWeatherDataForFiveDaysForecast,
     parseWeatherDataForTenHoursForecast,
     parseWeatherDataForCurrentMoment,
+    backgroundByWeatherConditions,
+    headerImageUrl,
+    weatherIcon,
 }

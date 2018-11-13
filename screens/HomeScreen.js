@@ -4,6 +4,7 @@ import {
     View,
     FlatList,
     SafeAreaView,
+    ImageBackground,
 } from 'react-native';
 
 // Expo
@@ -25,7 +26,7 @@ import CityScreen from '../components/CityScreen';
 
 
 export default class HomeScreen extends React.Component {
-    static navigationOptions = { header: null };
+    static navigationOptions = { header: null};
 
     state = {
         modalVisible: false,
@@ -109,7 +110,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginTop: 40,
     },
     activityIndicator: {
         marginTop: 20,
