@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     StyleSheet,
-    View
+    View,
+    Image
 } from 'react-native';
 //Components
 import StyledText from './StyledText';
+
+//Utils
+import {weatherIcon} from '../utils';
 
 export default class Hour extends React.PureComponent {
     render() {
@@ -24,7 +28,12 @@ export default class Hour extends React.PureComponent {
                     </StyledText>
                 </View>
                 <View style={styles.section}>
-
+                    <View style={styles.imageWrapper}>
+                        <Image
+                            source={require('../assets/images/01d.png')}
+                            style={styles.image}
+                        />
+                    </View>
                 </View>
                 <View style={styles.section}>
                     <StyledText style={styles.text}>
@@ -56,5 +65,14 @@ const styles = StyleSheet.create({
     text: {
         color: '#fff',
         fontSize: 17,
-    }
+    },
+    imageWrapper: {
+        width: 50,
+        height: 50,
+    },
+    image: {
+        flex: 1,
+        width: null,
+        height: null,
+    },
 });

@@ -78,7 +78,7 @@ const weatherIcon = (icon) => {
         case 'is' :
             return require('../assets/images/clouds.gif');
         default :
-            return require('../assets/images/clouds.gif');
+            return require('../assets/images/28.svg');
     }
 
 };
